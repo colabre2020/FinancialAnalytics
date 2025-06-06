@@ -1,0 +1,41 @@
+---
+title: "Module 4: Portfolio Optimization Examples"
+output: html_document
+---
+
+```{r}
+# R code examples for portfolio optimization using the Markowitz model
+
+# Load necessary libraries
+library(quantmod)
+library(PerformanceAnalytics)
+library(PortfolioAnalytics)
+
+# Define the assets for the portfolio
+assets <- c("AAPL", "MSFT", "GOOGL", "AMZN")
+
+# Get historical price data
+getSymbols(assets, from = "2020-01-01", to = Sys.Date())
+
+# Calculate daily returns
+returns <- na.omit(Return.calculate(merge(Cl(AAPL), Cl(MSFT), Cl(GOOGL), Cl(AMZN))))
+
+# Set up portfolio specifications
+portfolio <- portfolio.spec(assets = colnames(returns))
+
+# Add constraints (e.g., weights must sum to 1)
+portfolio <- add.constraint(portfolio, type = "weight_sum", min_sum = 1, max_sum = 1)
+
+# Add objective to maximize Sharpe ratio
+portfolio <- add.objective(portfolio, type = "return", name = "mean")
+portfolio <- add.objective(portfolio, type = "risk", name = "StdDev")
+
+# Optimize the portfolio
+opt_portfolio <- optimize.portfolio(returns, portfolio, optimize_method = "ROI", trace = TRUE)
+
+# Print the optimized weights
+print(opt_portfolio$weights)
+
+# Plot the efficient frontier
+chart.EfficientFrontier(opt_portfolio, match.col = "StdDev", main = "Efficient Frontier")
+```

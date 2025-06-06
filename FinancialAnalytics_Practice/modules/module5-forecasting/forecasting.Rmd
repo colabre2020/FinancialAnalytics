@@ -1,0 +1,54 @@
+---
+title: "Module 5: Forecasting Examples"
+output: html_document
+---
+
+```{r}
+# R code examples for forecasting financial data
+
+# Load necessary libraries
+library(forecast)
+library(tseries)
+
+# Example 1: ARIMA Model
+# Generate sample financial data
+set.seed(123)
+data <- ts(rnorm(100, mean = 100, sd = 10), frequency = 12, start = c(2020, 1))
+
+# Plot the data
+plot(data, main = "Sample Financial Data", ylab = "Value", xlab = "Time")
+
+# Fit ARIMA model
+fit_arima <- auto.arima(data)
+summary(fit_arima)
+
+# Forecast the next 12 periods
+forecast_arima <- forecast(fit_arima, h = 12)
+plot(forecast_arima, main = "ARIMA Forecast", ylab = "Value", xlab = "Time")
+
+# Example 2: Exponential Smoothing
+# Fit Exponential Smoothing model
+fit_ets <- ets(data)
+summary(fit_ets)
+
+# Forecast the next 12 periods
+forecast_ets <- forecast(fit_ets, h = 12)
+plot(forecast_ets, main = "Exponential Smoothing Forecast", ylab = "Value", xlab = "Time")
+
+# Example 3: Seasonal Decomposition
+# Decompose the time series
+decomposed <- decompose(data)
+plot(decomposed)
+
+# Example 4: Accuracy of Forecasts
+# Compare accuracy of ARIMA and Exponential Smoothing
+accuracy_arima <- accuracy(forecast_arima)
+accuracy_ets <- accuracy(forecast_ets)
+
+# Print accuracy results
+print("ARIMA Accuracy:")
+print(accuracy_arima)
+
+print("Exponential Smoothing Accuracy:")
+print(accuracy_ets)
+```

@@ -1,0 +1,47 @@
+---
+title: "Module 2: Time Series Analysis Examples"
+output: html_document
+---
+
+```{r}
+# R code examples for time series analysis in finance
+
+# Load necessary libraries
+library(tidyverse)
+library(lubridate)
+library(forecast)
+
+# Example 1: Trend Analysis
+# Generate a time series data
+set.seed(123)
+time_series_data <- ts(rnorm(120, mean = 100, sd = 10), frequency = 12, start = c(2010, 1))
+
+# Plot the time series data
+plot(time_series_data, main = "Time Series Data", ylab = "Value", xlab = "Time")
+
+# Fit a linear model to identify the trend
+trend_model <- tslm(time_series_data ~ trend)
+summary(trend_model)
+
+# Add the trend line to the plot
+lines(fitted(trend_model), col = "blue")
+
+# Example 2: Seasonal Decomposition
+# Decompose the time series data
+decomposed_data <- stl(time_series_data, s.window = "periodic")
+plot(decomposed_data)
+
+# Example 3: Forecasting with ARIMA
+# Fit an ARIMA model
+arima_model <- auto.arima(time_series_data)
+summary(arima_model)
+
+# Forecast the next 12 periods
+forecasted_values <- forecast(arima_model, h = 12)
+plot(forecasted_values, main = "ARIMA Forecast", ylab = "Value", xlab = "Time")
+
+# Example 4: Seasonal Adjustment
+# Seasonal adjustment using the X-13-ARIMA-SEATS method
+seasonally_adjusted <- seasadj(decomposed_data)
+plot(seasonally_adjusted, main = "Seasonally Adjusted Data", ylab = "Value", xlab = "Time")
+```

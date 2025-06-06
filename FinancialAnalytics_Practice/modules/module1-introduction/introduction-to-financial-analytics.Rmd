@@ -1,0 +1,53 @@
+---
+title: "Module 1: Introduction to Financial Analytics Examples"
+output: html_document
+---
+
+```{r}
+# R code examples for Module 1: Introduction to Financial Analytics
+
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Example 1: Basic Data Manipulation
+# Create a sample data frame
+financial_data <- data.frame(
+  Date = as.Date('2021-01-01') + 0:9,
+  Revenue = c(100, 150, 200, 250, 300, 350, 400, 450, 500, 550),
+  Expenses = c(80, 120, 180, 220, 260, 300, 340, 380, 420, 460)
+)
+
+# Calculate Profit
+financial_data <- financial_data %>%
+  mutate(Profit = Revenue - Expenses)
+
+# Print the updated data frame
+print(financial_data)
+
+# Example 2: Basic Visualization
+# Plot Revenue and Expenses
+ggplot(financial_data, aes(x = Date)) +
+  geom_line(aes(y = Revenue, color = "Revenue")) +
+  geom_line(aes(y = Expenses, color = "Expenses")) +
+  labs(title = "Revenue and Expenses Over Time",
+       x = "Date",
+       y = "Amount") +
+  scale_color_manual(values = c("Revenue" = "blue", "Expenses" = "red")) +
+  theme_minimal()
+
+# Example 3: Summary Statistics
+# Calculate summary statistics for Revenue and Expenses
+summary_stats <- financial_data %>%
+  summarise(
+    Total_Revenue = sum(Revenue),
+    Total_Expenses = sum(Expenses),
+    Total_Profit = sum(Profit),
+    Average_Revenue = mean(Revenue),
+    Average_Expenses = mean(Expenses),
+    Average_Profit = mean(Profit)
+  )
+
+# Print summary statistics
+print(summary_stats)
+```

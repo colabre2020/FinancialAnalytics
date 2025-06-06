@@ -1,0 +1,53 @@
+---
+title: "Module 3: Risk Management Examples"
+output: html_document
+---
+
+```{r}
+# R code examples for risk management principles and Value at Risk (VaR) calculations
+
+# Load necessary libraries
+library(quantmod)
+library(PerformanceAnalytics)
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Simulate daily returns for a hypothetical asset
+n <- 1000
+returns <- rnorm(n, mean = 0.0005, sd = 0.01)
+
+# Calculate cumulative returns
+cumulative_returns <- cumprod(1 + returns) - 1
+
+# Plot cumulative returns
+plot(cumulative_returns, type = "l", col = "blue", 
+     main = "Cumulative Returns of Hypothetical Asset", 
+     xlab = "Days", ylab = "Cumulative Returns")
+
+# Calculate Value at Risk (VaR) at 95% confidence level
+VaR_95 <- quantile(returns, 0.05)
+cat("Value at Risk (95% confidence):", VaR_95, "\n")
+
+# Calculate Value at Risk (VaR) at 99% confidence level
+VaR_99 <- quantile(returns, 0.01)
+cat("Value at Risk (99% confidence):", VaR_99, "\n")
+
+# Create a function to simulate portfolio returns
+simulate_portfolio <- function(weights, returns_matrix) {
+  return(rowSums(returns_matrix * weights))
+}
+
+# Example portfolio weights
+weights <- c(0.6, 0.4)  # 60% in asset 1, 40% in asset 2
+
+# Simulate returns for two assets
+returns_matrix <- matrix(rnorm(n * 2, mean = 0.0005, sd = 0.01), ncol = 2)
+
+# Simulate portfolio returns
+portfolio_returns <- simulate_portfolio(weights, returns_matrix)
+
+# Calculate portfolio VaR at 95% confidence level
+portfolio_VaR_95 <- quantile(portfolio_returns, 0.05)
+cat("Portfolio Value at Risk (95% confidence):", portfolio_VaR_95, "\n")
+```
